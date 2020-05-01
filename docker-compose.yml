@@ -1,28 +1,34 @@
 version: '3.1'
-
 services:
+    joomlacms:
+            image: joomla
+            volumes:
+                 - myjoomla_storage:/var/www/html/
+                          
+            restart: always
+            ports:
+            - 4444:80
+            depends_on:
+                   - mysqldbs
+            environment:
+                   JOOMLA_DB_USER: hritick
+                   JOOMLA_DB_PASSWORD: hritick524
+                   JOOMLA_DB_HOST: mysqldbs
+                   JOOMLA_DB_NAME: joomladb
 
-  ghost:
-    image: ghost:latest
-    restart: always
-    ports:
-      - 8081:2368
-    volumes:
-          - Ghost_storage:/var/lib/ghost/content
-    depends_on:
-            - Mysql 
-  Mysql:
-      image: mysql:5.7
-      environment:
-                MYSQL_ROOT_PASSWORD: hritick524
-                MYSQL_DATABASE: Ghostdb
-                MYSQL_USER: Hritick
-                MYSQL_PASSWORD: hritick524
-                MYSQL_DATABASE: mydatabase
-
-      restart: always
-      volumes:
-            - mysql_storage2:/var/lib/mqsql
+    mysqldbs:
+            image: mysql:5.7
+            volumes:
+                 - mysql_storage:/var/lib/mysql
+            restart: always
+            environment:
+                     MYSQL_ROOT_PASSWORD: Hritick524
+                     MYSQL_USER: hritick
+                     MYSQL_PASSWORD: hritick524
+                     MYSQL_DATABASE: joomladb
 volumes:
-      mysql_storage2:
-      Ghost_storage:
+      mysql_storage:
+      myjoomla_storage:
+        
+      
+
